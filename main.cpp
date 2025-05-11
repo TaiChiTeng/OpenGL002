@@ -48,8 +48,8 @@ int main()
         return -1;
     }
 
-    Shader shaderProgram("2.4.shader.vs", "2.4.shader.fs");
-    // ÔÚmainº¯ÊıÖĞ³õÊ¼»¯ºóÌí¼Ó
+    Shader shaderProgram("2.4.shader.vs", "2.5.shader.fs");
+    // åœ¨mainå‡½æ•°ä¸­åˆå§‹åŒ–åæ·»åŠ 
     Shader starShader("star.vs", "star.fs");
     glEnable(GL_PROGRAM_POINT_SIZE);
     glEnable(GL_BLEND);
@@ -58,11 +58,11 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
-        // Î»ÖÃ              // ÑÕÉ«
-         1.0f,  1.0f, 0.0f, 0.188f, 0.208f, 0.231f,  // ÓÒÉÏ
-         1.0f, -1.0f, 0.0f, 0.416f, 0.518f, 0.569f,  // ÓÒÏÂ
-        -1.0f, -1.0f, 0.0f, 0.416f, 0.518f, 0.569f,  // ×óÏÂ
-        -1.0f,  1.0f, 0.0f, 0.188f, 0.208f, 0.231f   // ×óÉÏ
+        // ä½ç½®              // é¢œè‰²
+         1.0f,  1.0f, 0.0f, 0.188f, 0.208f, 0.231f,  // å³ä¸Š
+         1.0f, -1.0f, 0.0f, 0.416f, 0.518f, 0.569f,  // å³ä¸‹
+        -1.0f, -1.0f, 0.0f, 0.416f, 0.518f, 0.569f,  // å·¦ä¸‹
+        -1.0f,  1.0f, 0.0f, 0.188f, 0.208f, 0.231f   // å·¦ä¸Š
     };
     unsigned int indices[] = {  // note that we start from 0!
         0, 1, 3,  // first Triangle
@@ -85,7 +85,6 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // ÑÕÉ«ÊôĞÔ
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
@@ -99,7 +98,7 @@ int main()
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
 
-    // ÔÚmainº¯ÊıÄÚÌí¼Ó
+    // æ˜Ÿæ˜Ÿ
     const int numStars = 100;
     struct Star {
         glm::vec3 position;
@@ -108,19 +107,18 @@ int main()
     Star stars[numStars];
     std::srand(static_cast<unsigned>(time(nullptr)));
     float aspect = (float)SCR_WIDTH / (float)SCR_HEIGHT;
-    // ÔÚĞÇĞÇÉú³É´úÂëÉÏ·½Ìí¼Ó¿Éµ÷²ÎÊı
-    const float maxHorizontal = 1.0f;   // »ù´¡·¶Î§ [-1.0, 1.0]
-    const float extraSpread = 0.2f;     // ¶îÍâÀ©Õ¹20%
+
+    const float maxHorizontal = 1.0f;
+    const float extraSpread = 0.2f;
     
     for (int i = 0; i < numStars; ++i) {
-        // µ÷Õûx×ø±êÊÊÓ¦´°¿Ú¿í¸ß±È
         // stars[i].position.x = ((rand() % 2000) / 1000.0f - 1.0f) * aspect;
         stars[i].position.x = ((rand() % 4000) / 2000.0f - 1.0f) * (maxHorizontal + extraSpread);
         stars[i].position.y = (rand() % 2000) / 1000.0f - 1.0f;
-        stars[i].position.z = -0.1f; // È·±£ÔÚ±³¾°Ç°Ãæ
+        stars[i].position.z = -0.1f;
         stars[i].size = (rand() % 100) / 100.0f * 2.5f + 1.5f; // 1.5-4.0
     }
-    // ÔÚÔ­ÓĞVAOÉùÃ÷ºóÌí¼Ó
+
     unsigned int starVAO, starVBO;
     glGenVertexArrays(1, &starVAO);
     glGenBuffers(1, &starVBO);
@@ -128,10 +126,9 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, starVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(stars), stars, GL_STATIC_DRAW);
 
-    // Î»ÖÃÊôĞÔ
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)0);
     glEnableVertexAttribArray(0);
-    // ´óĞ¡ÊôĞÔ
+
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, size));
     glEnableVertexAttribArray(1);
 
@@ -149,16 +146,13 @@ int main()
         processInput(window);
 
         // render
-        // ±³¾°É«
-        //glClearColor(0.718f, 0.318f, 0.114f, 1.0f);
-        //glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.718f, 0.318f, 0.114f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        // draw our first triangle
         shaderProgram.use();
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        // ÔÚäÖÈ¾Ñ­»·ÄÚ£¨»æÖÆ±³¾°Ö®ºó£©
         starShader.use();
         glBindVertexArray(starVAO);
         glDrawArrays(GL_POINTS, 0, numStars);
