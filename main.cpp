@@ -103,7 +103,7 @@ int main()
     struct Star {
         glm::vec3 position;
         float size;
-        // float phase;    // 初始相位（0~2π）
+        float phase;    // 初始相位（0~2π）
         float frequency;// 闪烁频率（Hz）
     };
     
@@ -120,7 +120,7 @@ int main()
         stars[i].position.y = (rand() % 2000) / 1000.0f - 1.0f;
         stars[i].position.z = -0.1f;
         stars[i].size = (rand() % 100) / 100.0f * 2.5f + 1.5f; // 1.5-4.
-        // stars[i].phase = static_cast<float>(rand() % 1000) / 1000.0f * 6.2832f; // 0~2π
+        stars[i].phase = static_cast<float>(rand() % 1000) / 1000.0f * 6.2832f; // 0~2π
         stars[i].frequency = (rand() % 100) / 100.0f * 1.0f + 0.5f; // 0.5~1.5 Hz
     }
 
@@ -137,12 +137,12 @@ int main()
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, size));
     glEnableVertexAttribArray(1);
     // 绑定starVAO时添加以下属性
-    // glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, phase));
-    // glEnableVertexAttribArray(2);
-    // glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, frequency));
-    // glEnableVertexAttribArray(3);
-    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, frequency));
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, phase));
     glEnableVertexAttribArray(2);
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, frequency));
+    glEnableVertexAttribArray(3);
+    // glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, frequency));
+    // glEnableVertexAttribArray(2);
     glBindVertexArray(0);
 
     // uncomment this call to draw in wireframe polygons.
@@ -150,7 +150,7 @@ int main()
     
     // 在main函数中声明时间变量
     float lastFrameTime = 0.0f;
-    
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
