@@ -11,7 +11,7 @@ float random(vec2 st) {
 void main()
 {
     // 基础参数
-    vec2 coord = gl_FragCoord.xy / vec2(320.0, 568.0);
+    vec2 coord = gl_FragCoord.xy / vec2(720.0, 1280.0);
     vec3 centerColor = vec3(0.612, 0.737, 0.820);
     
     // 生成三个随机渐变层
